@@ -83,6 +83,16 @@ function isOdd(n){
 
 var memorizedOddFinder = getMemorized(isOdd);
 
+
+function getMemorized(fn){
+    var cache = {};
+    return function(){
+        var key = JSON.stringify(arguments);
+        if (typeof cache[key] === "undefined")
+            cache[key] = fn.apply(this, arguments);
+        return cache[key];
+    }
+}
 function add(x,y){
     console.log("adding ", x , " and ", y);
     return x + y;
