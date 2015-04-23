@@ -27,3 +27,38 @@ function getEmployee(id,name,salary){
 the user should be able to initialize the object with basic, hra, da, & tax
 
 salary has to be readonly
+*/
+
+SalaryCalculator.prototype.instance = (function(){
+    var count = 0;
+    return {
+        increment : function(){ ++count ;},
+        getCount : function(){ return count;}
+    }
+})()
+
+function SalaryCalculator(basic, hra, da, tax){
+    this.basic = basic;
+    this.hra = hra;
+    this.da = da;
+    this.tax = tax;
+    this.salary = 0;
+    this.instance.increment();
+
+}
+
+ SalaryCalculator.prototype.calculate = function(){
+        var gross = this.basic + this.hra + this.da;
+        this.salary = gross * ((100-this.tax)/100);
+    }
+
+
+
+
+
+
+
+
+
+
+
