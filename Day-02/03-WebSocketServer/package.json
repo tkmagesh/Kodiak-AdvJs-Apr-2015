@@ -1,0 +1,14 @@
+{
+  "name": "03-WebSocketServer",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Magesh K",
+  "license": "ISC",
+  "dependencies": {
+    "nodejs-websocket": "^1.2.1"
+  }
+}

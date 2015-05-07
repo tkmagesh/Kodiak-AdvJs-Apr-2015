@@ -23,7 +23,7 @@
             if (evtArg.data === "done"){
                 displayMessage("Work Completed");
             } else {
-                console.log("unknown message from worker ", evtArg);
+                displayMessage(evtArg.data);
             }
         }
         function displayMessage(msg){
