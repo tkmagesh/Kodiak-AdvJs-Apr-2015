@@ -14,6 +14,7 @@
 
             worker = new Worker("complexWork.js");
             worker.addEventListener("message", onWorkerMessage);
+            
         }
         function onBtnDoWorkClick(){
             worker.postMessage("start");
