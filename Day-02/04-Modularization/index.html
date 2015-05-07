@@ -35,21 +35,25 @@
 
         this.set = function(attrName, value){
             _data[attrName] = value;
+
             //trigger change event
-            if (typeof _events[attrName] === "function")
-                _events[attrName]();
+            var listenerFns = _events[attrName];
+            listenerFns.forEach(function (listenerFn){
+                listenerFn();
+            })
+
         };
 
         var _events = {
-            basic : null,
-            hra : null,
-            da : null,
-            tax : null,
-            salary : null
+            basic : [],
+            hra : [],
+            da : [],
+            tax : [],
+            salary : []
         };
 
         this.addEventListener = function(attrName, listenerFn){
-            _events[attrName] = listenerFn;
+            _events[attrName].push( listenerFn);
         };
 
         this.removeEventListener = function(attrName, listenerFn){
