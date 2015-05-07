@@ -21,67 +21,93 @@
     //Model
     function SalaryCalculator(){
 
-        //this.basic = 0;
-        var _basic = 0;
-        this.onBasicChange = null;
-        this.getBasic = function(){
-            return _basic;
+        var _data = {
+            basic : 0,
+            hra : 0,
+            da : 0,
+            tax : 0,
+            salary : 0
         };
-        this.setBasic = function(value){
-            _basic = value;
-            if (typeof this.onBasicChange === "function")
-                this.onBasicChange();
-        }
+
+        this.get = function(attrName){
+            return _data[attrName];
+        };
+
+        this.set = function(attrName, value){
+            _data[attrName] = value;
+            //trigger change event
+            if (typeof _events[attrName] === "function")
+                _events[attrName]();
+        };
+
+        var _events = {
+            basic : null,
+            hra : null,
+            da : null,
+            tax : null,
+            salary : null
+        };
+
+        this.addEventListener = function(attrName, listenerFn){
+            _events[attrName] = listenerFn;
+        };
+
+        this.removeEventListener = function(attrName, listenerFn){
+            //Fill in the blanks
+        };
 
 
-        this.hra = 0;
-        this.da = 0;
-        this.tax = 0;
-        this.salary = 0;
-
-        this.onSalaryChange = null;
     }
     SalaryCalculator.prototype.calculate = function(){
-        var gross = this.getBasic() + this.hra + this.da;
-        var net = gross * ((100-this.tax)/100);
-        this.salary = net;
-        if (typeof this.onSalaryChange === "function")
-            this.onSalaryChange();
+        var gross = this.get('basic') + this.get('hra') + this.get('da');
+        var net = gross * ((100-this.get('tax'))/100);
+        this.set('salary', net);
     }
 
     //View
     $(function(){
         window.calculator = new SalaryCalculator();
 
-        calculator.onSalaryChange = function(){
-           $("#divResult").html(calculator.salary);
-        };
+        //Model change events
+        calculator.addEventListener('salary', function(){
+           $("#divResult").html(calculator.get('salary'));
+        });
 
-        calculator.onBasicChange = function(){
-            $("#txtBasic").val(calculator.getBasic());
-        };
+        calculator.addEventListener('basic', function(){
+            $("#txtBasic").val(calculator.get('basic'));
+        });
 
+        calculator.addEventListener('hra', function(){
+            $("#txtHra").val(calculator.get('hra'));
+        });
+
+        calculator.addEventListener('da', function(){
+            $("#txtDa").val(calculator.get('da'));
+        });
+
+        calculator.addEventListener('tax', function(){
+            $("#rangeTax").val(calculator.get('tax'));
+            $("#spanTax").html(calculator.get('tax'));
+        });
+
+        //Listens to UI Events
         $("#txtBasic").change(function(){
-           calculator.setBasic( $("#txtBasic").val().toInt());
+           calculator.set('basic', this.value.toInt());
         });
         $("#txtHra").change(function(){
-           calculator.hra = $("#txtHra").val().toInt();
+           calculator.set('hra', this.value.toInt());
         });
         $("#txtDa").change(function(){
-           calculator.da = $("#txtDa").val().toInt();
+           calculator.set('da', this.value.toInt());
         });
         $("#rangeTax").change(function(){
-           calculator.tax = $("#rangeTax").val().toInt();
+           calculator.set('tax', this.value.toInt());
         });
        $("#btnCalculate").click(function(){
-
            calculator.calculate();
-
        });
 
-        $("#rangeTax").change(function(){
-            $("#spanTax").html(this.value);
-        });
+
     });
     </script>
 </head>
