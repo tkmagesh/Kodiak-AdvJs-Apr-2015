@@ -18,7 +18,7 @@ define([], function(){
             _data[attrName] = value;
 
             //trigger change event
-            var listenerFns = _events[attrName];
+            var listenerFns = _events[attrName] || [];
             listenerFns.forEach(function (listenerFn){
                 setTimeout(listenerFn);
             });
@@ -26,14 +26,11 @@ define([], function(){
         };
 
         var _events = {
-            basic : [],
-            hra : [],
-            da : [],
-            tax : [],
-            salary : []
+
         };
 
         this.addEventListener = function(attrName, listenerFn){
+            _events[attrName] = _events[attrName] || [];
             _events[attrName].push( listenerFn);
         };
 
